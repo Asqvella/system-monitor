@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="canvas.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		window.onload = function () {
+			var ram_dps = []; 
+			var hdd_dps = [];
+			var cpu_dps = [];
+			var hdd_temp_dps = [];
+			var cpu_temp_dps = [];
+			var traffic_dps = [];
+			var mb_temp_dps = [];
+
+			var chart = new CanvasJS.Chart("chartContainer",{
+				title :{
+					text: "Server #1"
+				},
+				axisX: {
+					suffix: " sec"
+				},
+				axisY: [{
+					minimum: 0,
+        				maximum: 100, 
+					suffix: " %"
+				},
+				{
+					minimum: 0,
+        				maximum: 100,
+					suffix: " C"
+				},
+				{
+					minimum: 0,
+        				maximum: 100,
+					suffix: " mb"
+				}],			
+				data: [
+					{type: "line", showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "ram", dataPoints: ram_dps}, 
+					{type: "line", showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "hdd", dataPoints: hdd_dps},
+					{type: "line", showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "cpu", dataPoints: cpu_dps},
+					{type: "line", axisYIndex: 1, showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "hdd_temp", dataPoints: hdd_temp_dps},
+					{type: "line", axisYIndex: 1, showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "cpu_temp", dataPoints: cpu_temp_dps}, 
+					{type: "line", axisYIndex: 1, showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "mb_temp", dataPoints: mb_temp_dps},
+					{type: "line", axisYIndex: 2, showInLegend: "true", legendText: "no marker", markerType: "none", legendText: "traffic", dataPoints: traffic_dps}
+				]
+			});
+			var updateInterval = 1000;
+			var updateChart = function () {
+				$.getJSON("json", function(data) {
+					ram_dps.push({
+						x: data.time,
+						y: data.ram
+					});
+					hdd_dps.push({
+						x: data.time,
+						y: data.hdd
+					});
+					cpu_dps.push({
+						x: data.time,
+						y: data.cpu
+					});
+					hdd_temp_dps.push({
+						x: data.time,
+						y: data.hdd_temp
+					});
+					cpu_temp_dps.push({
+						x: data.time,
+						y: data.cpu_temp
+					});
+					mb_temp_dps.push({
+						x: data.time,
+						y: data.mb_temp
+					});
+					traffic_dps.push({
+						x: data.time,
+						y: data.traffic
+					});
+				});		
+				chart.render();		
+			};
+			setInterval(function(){updateChart()}, updateInterval); 
+		}
+	</script>
+	<div id="chartContainer" style="height: 300px; width:100%;"></div>
+</body>
+</html>
+
