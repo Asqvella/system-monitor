@@ -1,9 +1,9 @@
 # Sysmon
-## Monitoring and alerting system
+## Monitoring and alert system
 ### Features
 * Memory monitoring  
 * Real time graphs  
-* Email alerting   
+* Email alert   
 ### Setup  
 Clone from github  
 ` $ git clone https://github.com/Asqvella/system-monitor `  
